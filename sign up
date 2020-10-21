@@ -1,0 +1,100 @@
+from tkinter import*
+#from tkinter.ttk import*
+import sqlite3 as db
+from tkinter import messagebox
+from PIL import ImageTk,Image
+import webbrowser
+con=db.connect('sample.db')
+cur=con.cursor()
+cur.execute("CREATE TABLE IF NOT EXISTS student(Ename StringVar,Ename StringVar,Email StringVar, PhoneNumber StringVar,Password StringVar,ConfirmPassword StringVar)")
+cur.close()
+con.commit()
+con.close()
+#Creating Method for Putting Data in DataBase
+def put():
+    con=db.connect('sample.db')
+    cur=con.cursor()
+    if (Password.get()=="")and(Email.get()==""):
+        messagebox.showinfo('Many fields are Empty')
+    elif (Password.get()==""):
+        messagebox.showinfo('enter the password')
+       #status.set('enter the password')
+    elif Email.get()=="":
+        messagebox.showinfo('enter the Email')
+       #status.set('enter the email')
+    else:
+     cur.execute("insert into DATA values('%s','%s')"%(Fname.get(),Lname.get()))
+     cur.execute("insert into DATA values('%s','%s')"%(Email.get(),PhoneNumber.get()))
+     cur.execute("insert into DATA values('%s','%s')"%(Password.get(),ConfirmPassword.get()))
+     cur.close()
+     con.commit()
+     con.close()
+     messagebox.showinfo('You are registered')
+     #status.set('data added successfully')
+#function for nextpage call
+#cREATING GUI
+master=Tk()
+#function for nextpage call
+def call():
+    master.destroy()
+    import loginpy
+#background image and tittle for full window
+master.title("Welcome")
+image2 =Image.open('E:/New folder (3)/new.jpg')
+image1 = ImageTk.PhotoImage(image2)
+w = image1.width()
+h = image1.height()
+master.geometry('%dx%d+0+0' % (w,h)) 
+label1 = Label(master, image=image1)
+label1.pack()
+#background image for small window
+Frame_login1=Frame(master,bg='lightblue')
+Frame_login1.place(x=100,y=150,height=400,width=400)
+image3=Image.open('E:/New folder (3)/login-icon-3036.png')
+image4 = ImageTk.PhotoImage(image3)
+label= Label(Frame_login1, image=image4)
+label.pack()
+
+#create variables for accesing Entry Boxes and Tables:
+Fname=StringVar()
+Lname=StringVar()
+Email=StringVar()
+PhoneNumber=IntVar()
+Password=StringVar()
+ConfirmPassword=StringVar()
+status=StringVar()
+#Creating label for instructing the user:
+#master.geometry('%dx%d+0+0' % (1350,700))
+#frame for image
+#Frame_login=Frame(master,bg='pink')
+#Frame_login.place(x=100,y=150,height=400,width=400)
+#frame for register
+Frame_login=Frame(master,bg='lightgray')
+Frame_login.place(x=600,y=150,height=400,width=700)
+Label(Frame_login,text='SIGN UP HERE:',bg='lightgray',font=("Impact",20,'roman',),fg='red').place(x=220,y=35)
+Label(Frame_login,text='first Name:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=70,y=80)
+Label(Frame_login,text='Last Name:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=360,y=80)
+Label(Frame_login,text='Email:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=70,y=150)
+Label(Frame_login,text='Phone Number:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=360,y=150)
+Label(Frame_login,text='Password:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=70,y=230)
+Label(Frame_login,text='Confirm Password:',bg='lightgray',font=("Impact",12,'roman'),fg='#2F4F4F').place(x=360,y=230)
+Label(Frame_login,text='',textvariable=status).place(x=3,y=8)
+#link2 = Label(Frame_login, text="Ecosia Hyperlink", fg="blue", cursor="hand2").place(x=330,y=350)
+#link2.pack()
+#link2.bind("<Button-1>", lambda e: callback("python28"))
+#Creating Entry Boxes for Taking Input:
+a=Entry(Frame_login,bg='lightgray',font=("times new roman",17,'roman'), textvariable=Fname).place(x=70,y=110)
+Entry(Frame_login,bg='lightgray',font=("times new roman",17,'roman'), textvariable=Lname).place(x=360,y=110)
+Em=Entry(Frame_login,bg='gray',font=("times new roman",17,'roman'), textvariable=Email).place(x=70,y=190)
+Entry(Frame_login,bg='gray',font=("times new roman",17,'roman'), textvariable=PhoneNumber).place(x=360,y=190)
+pas=Entry(Frame_login,bg='pink',font=("times new roman",17,'roman'), textvariable=Password).place(x=70,y=260)
+Entry(Frame_login,bg='pink',font=("times new roman",17,'italic'), textvariable=ConfirmPassword).place(x=360,y=260)
+
+#Adding Button for Submitting Data:
+#columnspane decide how much column space is to be Given
+#ccc
+Button(Frame_login1,text='LOgin',bg='#2F4F4F',font=("Impact",10,'italic'),fg='#FF1493',command=call).place(x=200,y=330,width=110)
+but=Button(Frame_login,text='Submit',bg='#2F4F4F',font=("Impact",10,'italic'),fg='#FF1493',command=put).place(x=250,y=330,width=110)
+mainloop()
+messagebox.showinfo(status)
+
